@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "pfa1",
+			"path": ".."
+		},
+		{
+			"name": "converted_keras",
+			"path": "../../PFA/PfaProject/converted_keras"
+		}
+	],
+	"settings": {}
+}
