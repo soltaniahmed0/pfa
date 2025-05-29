@@ -72,6 +72,12 @@ h1, h2, h3 {
 .main-content {
     min-height: 80vh;
     padding: 2rem 5%;
+
+    /* Ajout de l'image en fond */
+    background-image: url('/static/classifier/images/bg.jpg'); /* adapte le chemin si besoin */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .footer {
@@ -751,4 +757,417 @@ ANALYZE BUTTON
             background-color: #e5e911; 
             border-radius: 1px;
         }
-  
+
+    /* Features Container */
+    .features-container {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        flex-wrap: wrap;
+        margin: 2rem 0;
+    }
+    
+    /* Unified Card Style */
+    .feature-card {
+        background: rgba(255, 253, 245, 0.95);
+        backdrop-filter: blur(12px);
+        border-radius: 18px;
+        padding: 2rem;
+        width: 100%;
+        max-width: 480px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(210, 180, 140, 0.3);
+        transition: all 0.4s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        border-color: rgba(210, 180, 140, 0.5);
+    }
+    
+    /* Card Content */
+    .feature-content h3 {
+        font-size: 1.6rem;
+        color: #5a7247; /* Olive green */
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .feature-content h3 i {
+        color: #6B8E23; /* OliveDrab */
+    }
+    
+    .feature-steps {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+    }
+    
+    .feature-steps li {
+        margin-bottom: 1.2rem;
+        padding-left: 2rem;
+        position: relative;
+        color: #556B2F; /* DarkOliveGreen */
+        line-height: 1.5;
+    }
+    
+    .feature-steps li i {
+        position: absolute;
+        left: 0;
+        top: 0.2rem;
+        color: #808000; /* Olive */
+        font-size: 1.1rem;
+        width: 1.5rem;
+        text-align: center;
+    }
+    
+    /* Learn More Links */
+    .learn-more {
+        display: inline-block;
+        margin-left: 0.5rem;
+        font-size: 0.85rem;
+        color: #8B4513; /* SaddleBrown */
+        text-decoration: none;
+        border-bottom: 1px dotted #8B4513;
+        transition: all 0.2s ease;
+    }
+    
+    .learn-more:hover {
+        color: #A0522D; /* Sienna */
+        border-bottom: 1px solid #A0522D;
+    }
+    
+    .arrow-icon {
+        width: 20px;
+        height: 20px;
+        margin-left: 10px;
+        transition: transform 0.3s ease;
+    }
+    
+    .btn:hover .arrow-icon {
+        transform: translateX(5px);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .features-container {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .feature-card {
+            max-width: 100%;
+        }
+    }
+
+    /* ==============================================
+                  RESPONSIVE DESIGN
+   Organisation mobile-first par composants
+   ============================================== */
+
+/* -------------------------------
+          Global Breakpoints
+------------------------------- */
+
+/* Grands écrans (≥1400px) - Ajustements spécifiques */
+@media (max-width: 1400px) {
+    .container {
+        max-width: 1320px;
+    }
+}
+
+/* Desktop standard (≥1200px) */
+@media (max-width: 1200px) {
+    :root {
+        --header-padding: 0.8rem 3%;
+    }
+    
+    .main-content {
+        padding: 2rem 3%;
+    }
+}
+
+/* Petits desktop/tablette paysage (≥992px) */
+@media (max-width: 992px) {
+    :root {
+        --nav-gap: 1.5rem;
+    }
+}
+
+/* Tablette portrait (≥768px) */
+@media (max-width: 768px) {
+    :root {
+        --font-size-base: 15px;
+    }
+}
+
+/* Mobile paysage (≥576px) */
+@media (max-width: 576px) {
+    :root {
+        --font-size-base: 14px;
+    }
+}
+
+/* Mobile portrait (≥400px) */
+@media (max-width: 400px) {
+    :root {
+        --font-size-base: 13px;
+    }
+}
+
+/* -------------------------------
+          Header & Navigation
+------------------------------- */
+
+@media (max-width: 992px) {
+    .header {
+        flex-wrap: wrap;
+        padding: var(--header-padding, 1rem 5%);
+    }
+    
+    .nav-links {
+        gap: var(--nav-gap, 1.5rem);
+        margin-top: 1rem;
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .logo-container {
+        margin-bottom: 1rem;
+    }
+    
+    .nav-links {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 576px) {
+    .nav-links a {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* -------------------------------
+          Upload Components
+------------------------------- */
+
+@media (max-width: 1200px) {
+    .upload-container {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 992px) {
+    .upload-container {
+        padding: 1.5rem;
+    }
+    
+    .file-upload-area {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .upload-icon {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .browse-text {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .upload-container {
+        padding: 1rem;
+    }
+    
+    .file-upload-area {
+        padding: 1rem;
+    }
+    
+    .upload-icon {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+/* -------------------------------
+          Feature Cards
+------------------------------- */
+
+@media (max-width: 1200px) {
+    .features-container {
+        gap: 1.5rem;
+    }
+    
+    .feature-card {
+        flex: 1 1 calc(50% - 1rem);
+    }
+}
+
+@media (max-width: 992px) {
+    .feature-card {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .feature-card {
+        padding: 1.5rem;
+    }
+    
+    .feature-content h3 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .feature-card {
+        padding: 1.2rem;
+    }
+    
+    .feature-steps li {
+        font-size: 0.9rem;
+    }
+}
+
+/* -------------------------------
+          Results Section
+------------------------------- */
+
+@media (max-width: 1400px) {
+    .results-grid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    }
+}
+
+@media (max-width: 992px) {
+    .results-grid {
+        gap: 1.5rem;
+    }
+    
+    .results-card {
+        min-height: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .image-wrapper {
+        height: 200px;
+    }
+}
+
+@media (max-width: 576px) {
+    .image-wrapper {
+        height: 180px;
+    }
+    
+    .disease-name {
+        font-size: 1.2rem;
+    }
+}
+
+/* -------------------------------
+          Buttons & CTAs
+------------------------------- */
+
+@media (max-width: 992px) {
+    .btn, .analyze-btn {
+        padding: 0.8rem 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .action-btns {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .action-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .btn, .analyze-btn {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* -------------------------------
+          Footer
+------------------------------- */
+
+@media (max-width: 768px) {
+    .footer {
+        padding: 1.5rem;
+        text-align: center;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+/* -------------------------------
+          Utilities
+------------------------------- */
+
+@media (max-width: 768px) {
+    .hide-on-mobile {
+        display: none !important;
+    }
+    
+    .text-center-mobile {
+        text-align: center;
+    }
+}
+
+/* ==============================================
+         Mobile-First Enhancements
+   ============================================== */
+
+@media (max-width: 400px) {
+    .nav-links {
+        gap: 0.5rem;
+    }
+    
+    .thumbnail-container {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .btn, .analyze-btn {
+        padding: 0.6rem 1rem;
+    }
+}
+
+@media (max-width: 360px) {
+    :root {
+        --font-size-base: 12px;
+    }
+    
+    .logo {
+        height: 35px;
+    }
+}
