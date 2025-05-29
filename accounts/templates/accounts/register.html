@@ -1,0 +1,91 @@
+{% extends 'classifier/base.html' %}
+{% load static %}
+
+{% block javascript %}
+    {# Ne charge pas app.js #}
+    <script src="{% static 'accounts/js/login.js' %}"></script>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'accounts/css/auth.css' %}">
+{% endblock %}
+
+
+{% block content %}
+{% include 'classifier/messages.html' %}
+
+<div class="auth-container">
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+    
+    <h2 class="auth-title">Create Account</h2>
+    
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        
+        <!-- Affichage des erreurs du formulaire -->
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+        
+        <div class="form-group">
+            <input type="text" name="username" id="username" placeholder=" " required>
+            <label for="username">Username</label>
+            {% if form.username.errors %}
+                <div class="error-message">{{ form.username.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <input type="text" name="first_name" id="first_name" placeholder=" ">
+            <label for="first_name">First Name</label>
+            {% if form.first_name.errors %}
+                <div class="error-message">{{ form.first_name.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <input type="text" name="last_name" id="last_name" placeholder=" ">
+            <label for="last_name">Last Name</label>
+            {% if form.last_name.errors %}
+                <div class="error-message">{{ form.last_name.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <input type="email" name="email" id="email" placeholder=" " required>
+            <label for="email">Email</label>
+            {% if form.email.errors %}
+                <div class="error-message">{{ form.email.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <input type="password" name="password1" id="password1" placeholder=" " required>
+            <label for="password1">Password</label>
+            {% if form.password1.errors %}
+                <div class="error-message">{{ form.password1.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <input type="password" name="password2" id="password2" placeholder=" " required>
+            <label for="password2">Confirm Password</label>
+            {% if form.password2.errors %}
+                <div class="error-message">{{ form.password2.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <button type="submit" class="auth-btn">Register</button>
+    </form>
+    
+    <div class="auth-links">
+        <a href="{% url 'accounts:login' %}" class="auth-link">Already have an account? Login</a>
+    </div>
+</div>
+{% endblock %}

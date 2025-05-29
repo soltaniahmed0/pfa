@@ -1,0 +1,123 @@
+{% extends 'classifier/base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'classifier/messages.html' %}
+<div class="analysis-results">
+    <div class="results-header">
+        <h2>Analysis Results</h2>
+        <p class="image-subtitle">{{ results|length }} image{{ results|length|pluralize }} analyzed</p>
+    </div>
+
+    <!-- Grid container-->
+    <div class="results-container {% if results|length > 1 %}results-grid{% else %}results-single{% endif %}">
+        {% for result in results %}
+        <div class="results-card" style="border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 20px; overflow: hidden;">
+            <!-- Image Section -->
+            <div class="image-section" style="padding: 15px; border-bottom: 1px solid #f0f0f0;">
+                <div class="image-wrapper" style="position: relative;">
+                    <img src="{{ MEDIA_URL }}{{ result.image_path }}" alt="Analyzed olive leaf" class="analyzed-image" style="max-width: 100%; display: block;">
+                    <div class="image-overlay" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.5); color: white; padding: 5px; text-align: center;">
+                        <span class="zoom-hint">Click to enlarge</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Diagnosis Section -->
+            <div class="diagnosis-section">
+                <div class="diagnosis-status {% if result.is_healthy %}healthy{% else %}diseased{% endif %}">
+                    {% if result.is_healthy %}
+                        <svg class="status-icon healthy-icon" viewBox="0 0 24 24">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                        </svg>
+                        <span class="status-text healthy-text">Healthy</span>
+                    {% else %}
+                        <svg class="status-icon diseased-icon" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                        </svg>
+                        <span class="status-text diseased-text">Disease Detected</span>
+                    {% endif %}
+                </div>
+                <div class="diagnosis-details">
+                    <h3 class="disease-name">{{ result.disease_name }}</h3>
+                    <div class="confidence-indicator">
+                        <div class="confidence-bar" style="width: {{ result.confidence }}%"></div>
+                        <span class="confidence-value">{{ result.confidence|floatformat:2 }}% confidence</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommendations Section -->
+            <div class="recommendations-section">
+                <div class="section-header">
+                    <svg class="section-icon" viewBox="0 0 24 24">
+                        <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm-1.06 13.54L7.4 12l1.41-1.41 2.12 2.12 4.24-4.24 1.41 1.41-5.64 5.66z"/>
+                    </svg>
+                    <h3 class="section-title">Treatment Recommendations</h3>
+                </div>
+                <div class="recommendation-content">
+                    <p class="recommendation-text">{{ result.treatment_recommendation }}</p>
+                    {% if not result.is_healthy %}
+                    <div class="additional-resources">
+                        <a href="https://www.google.com/search?q={{ result.disease_name|urlencode }}" target="_blank" class="resource-link">
+                            <svg class="link-icon" viewBox="0 0 24 24">
+                                <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+                            </svg>
+                            Learn more about {{ result.disease_name }}
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="actions-section">
+        <a href="{% url 'classify_image' %}" class="action-btn primary-btn">
+            <svg class="btn-icon white-icon" viewBox="0 0 24 24">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+            </svg>
+            Analyze More Images
+        </a>
+        <a href="{% url 'home' %}" class="action-btn secondary-btn">
+            <svg class="btn-icon dark-icon" viewBox="0 0 24 24">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            </svg>
+            Back to Home
+        </a>
+    </div>
+</div>
+
+<!-- Image Modal -->
+<div class="image-modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9);">
+    <span class="close-modal" style="position: absolute; top: 20px; right: 35px; color: white; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
+    <img class="modal-content" id="expanded-image" style="display: block; margin: auto; max-width: 90%; max-height: 80%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+</div>
+<script>
+    // Image zoom functionality
+    const analyzedImages = document.querySelectorAll('.analyzed-image');
+    const modal = document.querySelector('.image-modal');
+    const modalImg = document.getElementById("expanded-image");
+    const closeModal = document.querySelector(".close-modal");
+
+    analyzedImages.forEach(image => {
+        image.addEventListener('click', function() {
+            modal.style.display = "block";
+            modalImg.src = this.src;
+        });
+    });
+
+    if (closeModal) {
+        closeModal.addEventListener('click', function() { 
+            modal.style.display = "none";
+        });
+    }
+
+    window.addEventListener('click', function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    });
+</script>
+{% endblock %}

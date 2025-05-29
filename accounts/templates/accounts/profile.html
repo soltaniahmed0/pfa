@@ -1,0 +1,188 @@
+{% extends 'classifier/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'accounts/css/auth.css' %}">
+{% endblock %}
+
+{% block javascript %}
+    {# Ne charge pas app.js #}
+    <script src="{% static 'accounts/js/profil.js' %}"></script>
+    
+    {# JavaScript inline pour les fonctions utilisant les templates Django #}
+    <script>
+        // Variables globales avec les URLs Django
+        window.DJANGO_URLS = {
+            updatePreferences: "{% url 'accounts:update_preferences' %}",
+            deactivateAccount: "{% url 'accounts:deactivate_account' %}",
+            deleteAccount: "{% url 'accounts:delete_account' %}"
+        };
+        
+        window.CSRF_TOKEN = "{{ csrf_token }}";
+    </script>
+{% endblock %}
+
+{% block content %}
+<!-- Inclure le template réutilisable pour les messages -->
+{% include 'classifier/messages.html' %}
+
+<div class="profile-container">
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+    
+    <div class="profile-header">
+        <div class="avatar-upload">
+            {% if user.profile.profile_picture %}
+                <img src="{{ user.profile.profile_picture.url }}" class="profile-avatar" id="avatar-preview">
+            {% else %}
+                <img src="{% static 'accounts/images/deb.jpeg' %}" class="profile-avatar" id="avatar-preview">
+            {% endif %}
+        </div>
+        <div class="profile-info">
+            <h2>{{ user.get_full_name|default:user.username }}</h2>
+            <p>{{ user.email }}</p>
+            {% if user.profile.location %}
+                <p><i class="fas fa-map-marker-alt"></i> {{ user.profile.location }}</p>
+            {% endif %}
+        </div>
+    </div>
+    
+<div class="profile-tabs">
+    <a href="{% url 'accounts:profile' %}" class="profile-tab {% if request.resolver_match.url_name == 'profile' %}active{% endif %}">Profile</a>
+    <a href="{% url 'accounts:activity' %}" class="profile-tab {% if request.resolver_match.url_name == 'activity' %}active{% endif %}">Activity</a>
+</div>
+    
+    <form method="post" enctype="multipart/form-data" class="auth-form">
+        {% csrf_token %}
+        <div class="profile-grid">
+            <div class="profile-card">
+                <h3>Personal Information</h3>
+                
+                <div class="form-group">
+                    <input type="text" name="username" id="id_username" placeholder=" " value="{{ u_form.username.value|default:'' }}" required>
+                    <label for="id_username">Username</label>
+                    {% if u_form.username.errors %}
+                        <div class="error-message">{{ u_form.username.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <input type="email" name="email" id="id_email" placeholder=" " value="{{ u_form.email.value|default:'' }}" required>
+                    <label for="id_email">Email</label>
+                    {% if u_form.email.errors %}
+                        <div class="error-message">{{ u_form.email.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <input type="text" name="first_name" id="id_first_name" placeholder=" " value="{{ u_form.first_name.value|default:'' }}">
+                    <label for="id_first_name">First Name</label>
+                    {% if u_form.first_name.errors %}
+                        <div class="error-message">{{ u_form.first_name.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <input type="text" name="last_name" id="id_last_name" placeholder=" " value="{{ u_form.last_name.value|default:'' }}">
+                    <label for="id_last_name">Last Name</label>
+                    {% if u_form.last_name.errors %}
+                        <div class="error-message">{{ u_form.last_name.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <textarea name="bio" id="id_bio" placeholder=" " rows="4">{{ p_form.bio.value|default:'' }}</textarea>
+                    <label for="id_bio">Biography</label>
+                    {% if p_form.bio.errors %}
+                        <div class="error-message">{{ p_form.bio.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <input type="text" name="location" id="id_location" placeholder=" " value="{{ p_form.location.value|default:'' }}">
+                    <label for="id_location">Location</label>
+                    {% if p_form.location.errors %}
+                        <div class="error-message">{{ p_form.location.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <input type="date" name="birth_date" id="id_birth_date" value="{{ p_form.birth_date.value|date:'Y-m-d'|default:'' }}">
+                    <label for="id_birth_date">Birth Date</label>
+                    {% if p_form.birth_date.errors %}
+                        <div class="error-message">{{ p_form.birth_date.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="profile-card">
+                <h3>Profile Settings</h3>
+                
+                <!-- Profile Picture Upload Section -->
+                <div class="upload-section">
+                    <div class="upload-controls">
+                        <label for="id_profile_picture" class="upload-btn">
+                            <i class="fas fa-camera"></i>
+                            Change Profile Picture
+                        </label>
+                        <input type="file" name="profile_picture" id="id_profile_picture" accept="image/*" class="file-input" hidden>
+                        
+                        <div class="file-status">
+                            <small class="file-hint">JPG, PNG up to 5MB</small>
+                        </div>
+                        
+                        {% if p_form.profile_picture.errors %}
+                            <div class="error-message">{{ p_form.profile_picture.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Security Settings -->
+                <div class="security-section">
+                    <h4><i class="fas fa-shield-alt"></i> Security</h4>
+                    <div class="security-item">
+                        <div class="security-info">
+                            <span class="security-title">Password</span>
+                            <span class="security-desc">Change your account password</span>
+                        </div>
+                        <a href="{% url 'accounts:password_change' %}" class="security-btn">
+                            <i class="fas fa-key"></i>
+                            Change
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Account Preferences -->
+                <div class="preferences-section">
+                    <h4><i class="fas fa-cog"></i> Preferences</h4>
+                    <div class="preference-item">
+                        <div class="preference-info">
+                            <span class="preference-title">Email Notifications</span>
+                            <span class="preference-desc">Receive updates via email</span>
+                        </div>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="email-notifications" name="email_notifications" 
+                                {% if user.profile.email_notifications %}checked{% endif %}>
+                            <label for="email-notifications" class="slider"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button type="submit" class="auth-btn" style="margin-top: 2rem; margin-bottom: 1.5rem;">Update Profile</button>
+    </form>
+    
+    <!-- Section séparée pour les actions de compte -->
+    <div class="account-actions">
+        <h3>Account Actions</h3>
+        <div class="action-buttons">
+            <button type="button" class="auth-btn deactivate-btn">Deactivate Account</button>
+            <button type="button" class="auth-btn delete-btn">Delete Account</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,363 @@
+{% extends 'classifier/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="about-container">
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="hero-content">
+            <h1>About My Olive</h1>
+            <p>Revolutionizing olive tree health through AI-powered disease detection</p>
+        </div>
+    </section>
+
+    <!-- Project Description -->
+    <section class="project-description">
+        <div class="description-content">
+            <h2>Our Mission</h2>
+            <p>My Olive is an innovative final year project developed by software engineering student, aiming to help olive farmers detect diseases early using artificial intelligence. Our system analyzes images of olive leaves to identify common diseases with remarkable accuracy.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-leaf"></i>
+                    <h3>Disease Detection</h3>
+                    <p>Identifies common olive tree diseases like Peacock Spot, Olive Knot, and Verticillium Wilt.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-robot"></i>
+                    <h3>AI Technology</h3>
+                    <p>Uses deep learning models trained on thousands of olive leaf images for accurate diagnosis.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-globe"></i>
+                    <h3>Sustainable Farming</h3>
+                    <p>Helps reduce pesticide use by enabling targeted treatment of affected trees.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <h2>Meet The Creators</h2>
+        <p class="team-subtitle">Software Engineering Student passionate about AI and agriculture</p>
+        
+        <div class="team-members">
+            <div class="team-member">
+                <div class="member-photo">
+                    <img src="{% static 'classifier/images/student1.jpg' %}" alt="Student Creator 1">
+                </div>
+                <h3>Raja Hannachi</h3>
+                <p>Software Engineering Student</p>
+                <div class="member-social">
+                    <a href="https://www.linkedin.com/in/raja-hannachi-01b668254/"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/Rajahannachi"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            
+            <div class="team-member">
+                <div class="member-photo">
+                    <img src="{% static 'classifier/images/student2.jpg' %}" alt="Student Creator 2">
+                </div>
+                <h3>Ahmed Soltani</h3>
+                <p>Software Engineering Student</p>
+                <div class="member-social">
+                    <a href="https://www.linkedin.com/in/soltani-ahmed/"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/soltaniahmed0"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="contact-content">
+            <h2>Get In Touch</h2>
+            <p>Have questions about our project or interested in collaboration? We'd love to hear from you!</p>
+            
+            <div class="contact-methods">
+                <div class="contact-card">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Email Us</h3>
+                    <p>contact myolive@gmail.com</p>
+                </div>
+                <div class="contact-card">
+                    <i class="fas fa-university"></i>
+                    <h3>University</h3>
+                    <p>ISAMM</p>
+                </div>
+                <div class="contact-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Location</h3>
+                    <p>Manouba<br>Tunisia</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+    /* Base Styles */
+    :root {
+        --primary-color: #3a523a;
+        --secondary-color: #5a7258;
+        --accent-color: #8ba888;
+        --light-color: #f8f8f0;
+        --text-color: #556b4d;
+        --text-light: #7a9078;
+    }
+    
+    .about-container {
+        font-family: 'Raleway', sans-serif;
+        color: var(--text-color);
+        line-height: 1.6;
+        overflow-x: hidden;
+    }
+    
+    /* Hero Section */
+    .about-hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                    url('{% static "classifier/images/olive-grove.jpg" %}');
+        background-size: cover;
+        background-position: center;
+        min-height: 50vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        margin-bottom: 2rem;
+        padding: 0 1rem;
+    }
+    
+    .hero-content h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        margin-bottom: 1rem;
+    }
+    
+    .hero-content p {
+        font-size: clamp(1rem, 2.5vw, 1.5rem);
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    /* Sections Common Styles */
+    section {
+        padding: 3rem 1rem;
+    }
+    
+    h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(1.8rem, 3vw, 2.5rem);
+        text-align: center;
+        margin-bottom: 1.5rem;
+        color: var(--primary-color);
+    }
+    
+    /* Project Description */
+    .project-description {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .project-description p {
+        font-size: clamp(1rem, 1.1vw, 1.1rem);
+        margin-bottom: 2rem;
+        text-align: center;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+    
+    .feature-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .feature-card i {
+        font-size: 2rem;
+        color: var(--accent-color);
+        margin-bottom: 1rem;
+    }
+    
+    .feature-card h3 {
+        font-family: 'Playfair Display', serif;
+        margin-bottom: 0.8rem;
+        color: var(--secondary-color);
+        font-size: 1.3rem;
+    }
+    
+    /* Team Section */
+    .team-section {
+        background: var(--light-color);
+        text-align: center;
+    }
+    
+    .team-subtitle {
+        font-size: clamp(1rem, 1.2vw, 1.2rem);
+        margin-bottom: 2rem;
+        color: var(--text-light);
+    }
+    
+    .team-members {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .team-member {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 280px;
+    }
+    
+    .member-photo {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: 0 auto 1rem;
+        border: 4px solid #e0e8d0;
+    }
+    
+    .member-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .team-member h3 {
+        font-family: 'Playfair Display', serif;
+        margin-bottom: 0.5rem;
+        color: var(--secondary-color);
+        font-size: 1.3rem;
+    }
+    
+    .team-member p {
+        color: var(--text-light);
+        margin-bottom: 1rem;
+    }
+    
+    .member-social a {
+        color: var(--accent-color);
+        font-size: 1.3rem;
+        margin: 0 0.5rem;
+        transition: color 0.3s ease;
+    }
+    
+    .member-social a:hover {
+        color: var(--secondary-color);
+    }
+    
+    /* Contact Section */
+    .contact-section {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .contact-content {
+        text-align: center;
+    }
+    
+    .contact-content p {
+        font-size: clamp(1rem, 1.1vw, 1.1rem);
+        margin-bottom: 2rem;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .contact-methods {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .contact-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    
+    .contact-card i {
+        font-size: 1.8rem;
+        color: var(--accent-color);
+        margin-bottom: 1rem;
+    }
+    
+    .contact-card h3 {
+        font-family: 'Playfair Display', serif;
+        margin-bottom: 0.8rem;
+        color: var(--secondary-color);
+        font-size: 1.3rem;
+    }
+    
+    .contact-card p {
+        color: var(--text-light);
+        margin-bottom: 0;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .about-hero {
+            min-height: 40vh;
+        }
+        
+        section {
+            padding: 2rem 1rem;
+        }
+        
+        .features-grid {
+            grid-template-columns: 1fr;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .team-members {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .team-member {
+            max-width: 100%;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .about-hero {
+            min-height: 30vh;
+        }
+        
+        .contact-methods {
+            grid-template-columns: 1fr;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+    }
+</style>
+{% endblock %}
