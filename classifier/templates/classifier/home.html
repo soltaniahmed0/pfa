@@ -1,0 +1,80 @@
+{% extends 'classifier/base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'classifier/messages.html' %}
+<section class="hero-section">
+    <h1 style="text-align: center;  margin-bottom: 2em;">
+  Welcome  {{ user.username }}!
+</h1>
+    <div class="hero-text fade-in" style="animation-delay: 0.3s;">
+        <h2>Smart Olive Tree Protection</h2>
+        <div class="feature-card glow-animation">
+            <div class="feature-content">
+                <h3>How it works:</h3>
+                <ol class="feature-steps">
+                    <li>Upload photos of olive leaves</li>
+                    <li>Our AI analyzes disease patterns</li>
+                    <li>Get instant diagnosis & treatment tips</li>
+                </ol>
+            </div>
+        </div>
+        
+        <a href="{% url 'classify_image' %}" class="btn pulse-glow">
+            <span>Start Free Analysis</span>
+            <svg class="arrow-icon" viewBox="0 0 24 24">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+        </a>
+    </div>
+    
+    <div class="image-gallery">
+        <!-- Healthy leaf sample -->
+        <div class="gallery-item card-animation" style="animation-delay: 0.2s;">
+            <div class="image-container">
+                <img src="{% static 'classifier/images/Healthy.jpeg' %}" alt="Healthy olive leaf">
+                <div class="image-label healthy">Healthy</div>
+            </div>
+            <div class="image-desc">No disease detected</div>
+        </div>
+        
+        <!-- Peacock Spot example -->
+        <div class="gallery-item card-animation" style="animation-delay: 0.4s;">
+            <div class="image-container">
+                <img src="{% static 'classifier/images/2.jpg' %}" alt="Peacock Spot">
+                <div class="image-label disease">Peacock Spot</div>
+            </div>
+            <div class="image-desc">Fungal infection</div>
+        </div>
+        
+        <!-- Aculus example -->
+        <div class="gallery-item card-animation" style="animation-delay: 0.6s;">
+            <div class="image-container">
+                <img src="{% static 'classifier/images/4.png' %}" alt="Aculus">
+                <div class="image-label disease">Aculus</div>
+            </div>
+            <div class="image-desc">Mite infestation</div>
+        </div>
+    </div>
+</section>
+
+<!-- Added tech explanation section -->
+<section class="tech-explanation fade-in" style="animation-delay: 0.8s;">
+    <h3>Our Technology</h3>
+    <p>Using deep learning (ResNet9) trained on 6,961 annotated olive leaf images</p>
+    <div class="tech-stats">
+        <div class="stat">
+            <div class="stat-value">96%</div>
+            <div class="stat-label">Accuracy</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">3s</div>
+            <div class="stat-label">Analysis Time</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">24/7</div>
+            <div class="stat-label">Monitoring</div>
+        </div>
+    </div>
+</section>
+{% endblock %}

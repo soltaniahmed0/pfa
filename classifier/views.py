@@ -1,62 +1,110 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from tensorflow.keras.models import load_model
+from django.contrib.auth.decorators import login_required
 from PIL import Image
 import numpy as np
-from django.views.decorators.csrf import csrf_exempt
+import os
+import uuid
+from django.conf import settings
+from django.utils import timezone
+from classifier.models import AnalysisHistory
 
-# Load the trained model and class names
-model = load_model("classifier/keras/keras_model.h5", compile=False)
+# Load model
+model_path = os.path.join(settings.BASE_DIR, "classifier/keras/keras_model.h5")
+labels_path = os.path.join(settings.BASE_DIR, "classifier/keras/labels.txt")
 
-with open("classifier/keras/labels.txt", "r") as file:
-    class_names = [line.strip() for line in file.readlines()]
+model = load_model(model_path, compile=False)
+class_names = [line.strip() for line in open(labels_path, "r")]
 
-# Function to preprocess the image
 def preprocess_image(image):
-    img = Image.open(image).convert("RGB")  # Open image and convert to RGB if necessary
-    img = img.resize((224, 224))  # Resize to match the model's expected input size
-    img_array = np.array(img) / 255.0  # Normalize the image
-    img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
-    return img_array
+    img = Image.open(image).convert("RGB")
+    img = img.resize((224, 224))
+    img_array = np.array(img) / 255.0
+    return np.expand_dims(img_array, axis=0)
 
-from django.http import StreamingHttpResponse
-import json
+def home(request):
+    if not request.user.is_authenticated:
+        return redirect('landing') 
+    return render(request, 'classifier/home.html')
+
+
+def about(request):
+    return render(request, 'classifier/about.html')
+
+
+def landing_page(request):
+    if request.user.is_authenticated:
+        return redirect('home')  
+    return render(request, 'classifier/landing.html')
 
 @csrf_exempt
 def classify_image(request):
     if request.method == 'POST' and request.FILES.getlist('images'):
-        uploaded_images = request.FILES.getlist('images')
-
-        def generate():
-            yield '{"results": [\n'  # Begin JSON list
-            first = True
-            for uploaded_image in uploaded_images:
-                img_array = preprocess_image(uploaded_image)
+        try:
+            results = []
+            
+            for img in request.FILES.getlist('images'):
+                # Generate unique filename
+                img_name = f"{uuid.uuid4().hex}{os.path.splitext(img.name)[1]}"
+                img_path = os.path.join(settings.MEDIA_ROOT, img_name)
+                
+                # Save image
+                with open(img_path, 'wb+') as destination:
+                    for chunk in img.chunks():
+                        destination.write(chunk)
+                
+                # Process and predict
+                img_array = preprocess_image(img_path)
                 predictions = model.predict(img_array)
-                predicted_class = np.argmax(predictions, axis=1)
-                predicted_label = class_names[predicted_class[0]]
-                confidence_score = float(predictions[0][predicted_class[0]])
-
-                result = {
-                    'image_name': uploaded_image.name,
-                    'predicted_class': predicted_label,
-                    'confidence_score': confidence_score
+                class_idx = np.argmax(predictions[0])
+                confidence = float(predictions[0][class_idx]) * 100
+                
+                # Class mapping
+                class_mapping = {
+                    0: "Aculus olearius",
+                    1: "Peacock Spot",
+                    2: "Healthy"
                 }
+                
+# Enregistrer dans l'historique
+                if request.user.is_authenticated:
+                    AnalysisHistory.objects.create(
+                        user=request.user,
+                        image=img_name,
+                        disease_name=class_mapping.get(class_idx, "Unknown"),
+                        confidence=confidence,
+                        is_healthy=(class_idx == 2),
+                        treatment_recommendation=get_treatment_recommendation(class_idx)
+                    )
 
-                # Add comma between items (except the first one)
-                if not first:
-                    yield ',\n'
-                else:
-                    first = False
+                results.append({
+                    'image_name': img.name,
+                    'image_path': img_name,
+                    'disease_name': class_mapping.get(class_idx, "Unknown"),
+                    'confidence': confidence,
+                    'is_healthy': class_idx == 2,
+                    'treatment_recommendation': get_treatment_recommendation(class_idx),
+                })
+            
+            context = {
+                'results': results,
+                'MEDIA_URL': settings.MEDIA_URL,
+            }
+            
+            return render(request, 'classifier/results.html', context)
+            
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    
+    return render(request, 'classifier/upload.html')
 
-                yield json.dumps(result)
+def get_treatment_recommendation(class_idx):
+    recommendations = {
+        0: "Application of specific acaricide recommended.",
+        1: "Copper-based fungicide treatment required.",
+        2: "No treatment needed. Your olive tree is healthy."
+    }
+    return recommendations.get(class_idx, "Please consult a specialist.")
 
-            yield '\n]}'  # End JSON list
-
-        return StreamingHttpResponse(generate(), content_type='application/json')
-
-    return JsonResponse({'error': 'No images provided or invalid request'}, status=400)
-
-
-def home(request):
-    return render(request, 'home.html')  # Render the home.html template

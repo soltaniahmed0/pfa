@@ -1,0 +1,54 @@
+{% extends 'classifier/base.html' %}
+{% load static %}
+
+{% block javascript %}
+    <script src="{% static 'accounts/js/login.js' %}"></script>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'accounts/css/auth.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include 'classifier/messages.html' %}
+
+<div class="auth-container">
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+    
+    <h2 class="auth-title">Welcome Back</h2>
+    
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            {{ form.username.label_tag }}
+            {{ form.username }}
+            {% if form.username.errors %}
+                <div class="error-message">{{ form.username.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.password.label_tag }}
+            {{ form.password }}
+            {% if form.password.errors %}
+                <div class="error-message">{{ form.password.errors }}</div>
+            {% endif %}
+        </div>
+        
+        {% if form.non_field_errors %}
+            <div class="error-message">{{ form.non_field_errors }}</div>
+        {% endif %}
+        
+        <button type="submit" class="auth-btn">Login</button>
+    </form>
+    
+    <div class="auth-links">
+        <a href="{% url 'accounts:register' %}" class="auth-link">Create an account</a>
+    </div>
+</div>
+{% endblock %}

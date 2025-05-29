@@ -1,0 +1,368 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to My Olive</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Raleway', sans-serif;
+            background: #f8f8f0; /* Beige pastel clair */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            color: #556b4d; /* Vert olive doux */
+        }
+
+        .landing-container {
+            text-align: center;
+            animation: fadeInUp 2s ease-out;
+            max-width: 1200px;
+            padding: 2rem;
+        }
+
+        .logo-section {
+            margin-bottom: 3rem;
+            animation: bounceIn 1.5s ease-out;
+        }
+
+        .main-logo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            border: 2px solid #d4e8c4; /* Vert pastel très clair */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .main-logo img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+        }
+
+        .olive-icon {
+            font-size: 4rem;
+            color: #8ba888; /* Vert olive pastel */
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #6b8e6b; /* Vert olive moyen */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            font-weight: 300;
+            margin-bottom: 3rem;
+            color: #7a9078; /* Vert olive grisé */
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-section {
+            animation: slideUp 1.5s ease-out 1s both;
+        }
+
+        .welcome-btn {
+            background: linear-gradient(45deg, #b8d8b8, #9bc49b); /* Dégradé vert pastel */
+            color: #3a523a; /* Vert foncé pour contraste */
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 5px 20px rgba(155, 196, 155, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(155, 196, 155, 0.4);
+            background: linear-gradient(45deg, #9bc49b, #7eae7e);
+        }
+
+        .welcome-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .welcome-btn:hover::before {
+            left: 100%;
+        }
+
+        .features {
+            margin-top: 4rem;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            animation: fadeIn 2s ease-out 1.5s both;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid #e0e8d0;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            max-width: 300px;
+        }
+
+        .feature:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border-color: #c8d8b8;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #8ba888; /* Vert olive pastel */
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: #5a7258; /* Vert olive plus soutenu */
+        }
+
+        .feature-desc {
+            font-size: 1rem;
+            color: #7a9078; /* Vert olive grisé */
+            line-height: 1.5;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .olive-leaves {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .olive-leaf {
+            position: absolute;
+            color: #c8d8b8; /* Vert très pastel */
+            font-size: 24px;
+            opacity: 0.6;
+            animation: float 8s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            .features {
+                flex-direction: column;
+                gap: 2rem;
+                align-items: center;
+            }
+            .feature {
+                width: 100%;
+                max-width: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="olive-leaves" id="oliveLeaves"></div>
+
+    <div class="landing-container">
+        <div class="logo-section">
+            <div class="main-logo">
+                <img src="{% static 'classifier/images/logo.png' %}" alt="My Olive Logo" 
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <i class="fas fa-seedling olive-icon" style="display:none;"></i>
+            </div>
+            <h1 class="main-title">My Olive</h1>
+            <p class="subtitle">Advanced Olive Tree Disease Detection System</p>
+        </div>
+
+        <div class="cta-section">
+            <a href="{% url 'accounts:login' %}" class="welcome-btn">
+                Get Started
+                <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>
+            </a>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <h3 class="feature-title">Smart Detection</h3>
+                <p class="feature-desc">AI-powered image analysis for accurate disease identification</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h3 class="feature-title">Health Monitoring</h3>
+                <p class="feature-desc">Comprehensive health assessment of your olive trees</p>
+            </div>
+            
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-prescription-bottle-alt"></i>
+                </div>
+                <h3 class="feature-title">Treatment Guide</h3>
+                <p class="feature-desc">Personalized treatment recommendations for detected issues</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating olive leaves
+        function createLeaves() {
+            const container = document.getElementById('oliveLeaves');
+            const leafIcons = ['🌿', '🍃', '☘️'];
+            
+            for (let i = 0; i < 12; i++) {
+                const leaf = document.createElement('div');
+                leaf.className = 'olive-leaf';
+                leaf.innerHTML = leafIcons[Math.floor(Math.random() * leafIcons.length)];
+                
+                // Random properties
+                const left = Math.random() * 100;
+                const delay = Math.random() * 8;
+                const duration = Math.random() * 4 + 6;
+                const size = Math.random() * 20 + 15;
+                
+                leaf.style.left = `${left}vw`;
+                leaf.style.animationDelay = `${delay}s`;
+                leaf.style.animationDuration = `${duration}s`;
+                leaf.style.fontSize = `${size}px`;
+                leaf.style.opacity = Math.random() * 0.4 + 0.3;
+                
+                container.appendChild(leaf);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', createLeaves);
+        
+        // Add some interactive particles on mouse move
+        document.addEventListener('mousemove', function(e) {
+            const particle = document.createElement('div');
+            particle.className = 'olive-leaf';
+            particle.innerHTML = '•';
+            particle.style.left = e.clientX + 'px';
+            particle.style.top = e.clientY + 'px';
+            particle.style.position = 'fixed';
+            particle.style.fontSize = '8px';
+            particle.style.color = '#a8c6a8';
+            particle.style.animation = 'float 3s linear forwards';
+            particle.style.zIndex = '1000';
+            
+            document.body.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

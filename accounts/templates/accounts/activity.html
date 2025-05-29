@@ -1,0 +1,101 @@
+{% extends 'classifier/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="main-content">
+    <div class="analysis-results">
+        <div class="results-header">
+            <h2>Your Analysis History</h2>
+        </div>
+        
+        {% if analyses %}
+            <div class="results-grid">
+                {% for analysis in analyses %}
+                <div class="results-card">
+                    <div class="image-section">
+                        <div class="image-wrapper">
+                            <img src="{{ analysis.image.url }}" alt="Analysis result" class="analyzed-image">
+                            <div class="image-overlay">
+                                <span class="zoom-hint">Click to enlarge</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="diagnosis-section">
+                        <div class="diagnosis-status">
+                            <svg class="status-icon {% if analysis.is_healthy %}healthy-icon{% else %}diseased-icon{% endif %}" viewBox="0 0 24 24">
+                                {% if analysis.is_healthy %}
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                {% else %}
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                                {% endif %}
+                            </svg>
+                            <p class="status-text {% if analysis.is_healthy %}healthy-text{% else %}diseased-text{% endif %}">
+                                {% if analysis.is_healthy %}Healthy{% else %}Disease detected{% endif %}
+                            </p>
+                        </div>
+                        
+                        <h3 class="disease-name">{{ analysis.disease_name }}</h3>
+                        
+                        <div class="confidence-indicator">
+                            <div class="confidence-bar" style="width: {{ analysis.confidence }}%"></div>
+                            <p class="confidence-value">Confidence: {{ analysis.confidence|floatformat:2 }}%</p>
+                        </div>
+                        
+                        <div class="recommendation-content">
+                            <p class="recommendation-text">{{ analysis.treatment_recommendation }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="actions-section">
+                        <small>{{ analysis.created_at }}</small>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center">You haven't performed any analysis yet.</p>
+        {% endif %}
+    </div>
+        <div class="actions-section">
+        <a href="{% url 'accounts:profile' %}" class="action-btn primary-btn">
+            Back to Profile
+        </a>
+        <a href="{% url 'home' %}" class="action-btn secondary-btn">
+            <svg class="btn-icon dark-icon" viewBox="0 0 24 24">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            </svg>
+            Back to Home
+        </a>
+    </div>
+</div>
+
+<!-- Modal pour agrandir les images -->
+<div id="imageModal" class="image-modal">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="modalImage">
+</div>
+
+<script>
+// Script pour le modal d'image
+document.querySelectorAll('.image-wrapper').forEach(wrapper => {
+    wrapper.addEventListener('click', function() {
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        modal.style.display = "block";
+        modalImg.src = this.querySelector('img').src;
+    });
+});
+
+document.querySelector('.close-modal').addEventListener('click', function() {
+    document.getElementById('imageModal').style.display = "none";
+});
+
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('imageModal');
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+});
+</script>
+{% endblock %}

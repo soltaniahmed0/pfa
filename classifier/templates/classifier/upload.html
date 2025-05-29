@@ -1,0 +1,76 @@
+{% extends 'classifier/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="upload-wrapper">
+    <div class="upload-container">
+        <div class="upload-header">
+            <h2>Olive Leaf Analysis</h2>
+            <p>Upload clear photos of olive leaves for instant disease detection</p>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" class="upload-form" id="upload-form">
+            {% csrf_token %}
+            
+            <div class="file-upload-area">
+                <div class="upload-instructions">
+                    <div class="upload-icon">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 13V19a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"/>
+    <path d="m14 2 6 6"/>
+    <path d="m9 13 3 3 7-7"/>
+</svg>
+                    </div>
+                    
+                    <div class="file-input-wrapper">
+                        <input type="file" id="image-upload" name="images" accept="image/*" multiple required>
+                        <label for="image-upload" class="file-upload-label">
+                            <span class="browse-text">Select files</span>
+                            <span class="file-requirements">JPG, PNG (Max 5MB each)</span>
+                        </label>
+                        <div id="file-count" style="display: none; margin-top: 20px; text-align: center; color: #34e610;"></div>
+
+                    </div>
+            </div>
+                </div>
+                
+
+                                <button type="submit" class="analyze-btn">
+                    Analyze Leaves
+                </button>
+                </div>
+            </div>
+
+            <div class="feature-card glow-animation">
+            <div class="feature-content">
+                <h3>📸 Tips for better results:</h3>
+                <ul class="feature-steps">
+                    <li>Take photos in natural daylight</li>
+                    <li>Ensure leaves are clearly visible</li>
+                    <li>Photograph both sides of leaves</li>
+                    <li>Upload multiple angles for best results</li>
+                </ul>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('image-upload');
+        const fileCount = document.getElementById('file-count');
+        
+        // Afficher le nombre de fichiers sélectionnés
+        input.addEventListener('change', function(e) {
+            if (this.files && this.files.length > 0) {
+                const count = this.files.length;
+                fileCount.innerHTML = `${count} file${count > 1 ? 's' : ''} selected`;
+                fileCount.style.display = 'block';
+            } else {
+                fileCount.style.display = 'none';
+            }
+        });
+    });
+</script>
+{% endblock %}
