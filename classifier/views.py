@@ -25,8 +25,6 @@ def preprocess_image(image):
     return np.expand_dims(img_array, axis=0)
 
 def home(request):
-    if not request.user.is_authenticated:
-        return redirect('landing') 
     return render(request, 'classifier/home.html')
 
 
@@ -35,8 +33,6 @@ def about(request):
 
 
 def landing_page(request):
-    if request.user.is_authenticated:
-        return redirect('home')  
     return render(request, 'classifier/landing.html')
 
 @csrf_exempt

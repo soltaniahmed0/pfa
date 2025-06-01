@@ -29,6 +29,7 @@
                     <li><a href="{% url 'accounts:logout' %}" class="{% active_link request 'logout' %}">Logout</a></li>
                     
                 {% else %}
+                    <li><a href="{% url 'home' %}" class="{% active_link request 'home' %}">Home</a></li>
                     <li><a href="{% url 'accounts:login' %}" class="{% active_link request 'login' %}">Login</a></li>
                     <li><a href="{% url 'accounts:register' %}" class="{% active_link request 'register' %}">Register</a></li>
                 {% endif %}
